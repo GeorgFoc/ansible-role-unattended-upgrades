@@ -1,6 +1,10 @@
 // Unattended-Upgrade::Origins-Pattern controls which packages are
 // upgraded.
+{% if ansible_distribution_version == "18.04" %}
+Unattended-Upgrade::Allowed-Origins {
+{% else %}
 Unattended-Upgrade::Origins-Pattern {
+{% endif %}
 {% if unattended_origins_patterns is defined %}
   {% for origin in unattended_origins_patterns %}
     "{{ origin }}";
@@ -18,6 +22,14 @@ Unattended-Upgrade::Package-Blacklist {
       "{{package}}";
 {% endfor %}
 };
+
+// This option will controls whether the development release of Ubuntu will be
+// upgraded automatically.
+{% if unattended_devrelease %}
+Unattended-Upgrade::DevRelease "true";
+{% else %}
+Unattended-Upgrade::DevRelease "false";
+{% endif %}
 
 {% if not unattended_autofix_interrupted_dpkg %}
 // This option allows you to control if on a unclean dpkg exit
@@ -52,6 +64,12 @@ Unattended-Upgrade::Mail "{{unattended_mail}}";
 // Set this value to "true" to get emails only on errors. Default
 // is to always send a mail if Unattended-Upgrade::Mail is set
 Unattended-Upgrade::MailOnlyOnError "true";
+{% endif %}
+
+{% if unattended_remove_unused_kernel_packages %}
+// Remove unused automatically installed kernel-related packages
+// (kernel images, kernel headers and kernel version locked tools).
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
 {% endif %}
 
 {% if unattended_remove_unused_dependencies %}
@@ -101,4 +119,9 @@ Dpkg::Options {
 // Use apt bandwidth limit feature, this example limits the download
 // speed to 70kb/sec
 Acquire::http::Dl-Limit "{{ unattended_dl_limit }}";
+{% endif %}
+
+{% if unattended_syslog_enable %}
+// Enable logging to syslog. Default is False
+Unattended-Upgrade::SyslogEnable "true";
 {% endif %}

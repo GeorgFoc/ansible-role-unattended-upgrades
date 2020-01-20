@@ -22,6 +22,10 @@ unattended_package_blacklist: []
 # The default is true, to ensure updates keep getting installed
 unattended_autofix_interrupted_dpkg: true
 
+# This option will controls whether the development release of Ubuntu will be
+# upgraded automatically.
+unattended_devrelease: false
+
 #Unattended-Upgrade::MinimalSteps
 # Split the upgrade into the smallest possible chunks so that
 # they can be interrupted with SIGUSR1. This makes the upgrade
@@ -120,3 +124,7 @@ unattended_dpkg_options: []
 
 # Use apt bandwidth limit feature, this example limits the download speed to 70kb/sec
 #unattended_dl_limit: 70
+
+unattended_remove_unused_kernel_packages: false
+
+unattended_syslog_enable: false
