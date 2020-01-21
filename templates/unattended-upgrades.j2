@@ -1,10 +1,6 @@
 // Unattended-Upgrade::Origins-Pattern controls which packages are
 // upgraded.
-{% if ansible_distribution_version == "18.04" %}
-Unattended-Upgrade::Allowed-Origins {
-{% else %}
 Unattended-Upgrade::Origins-Pattern {
-{% endif %}
 {% if unattended_origins_patterns is defined %}
   {% for origin in unattended_origins_patterns %}
     "{{ origin }}";
